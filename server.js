@@ -1,4 +1,6 @@
+require('dotenv').config();
 const express = require('express');
+const mongoose = require('mongoose');
 
 const app = express();
 
@@ -16,6 +18,16 @@ app.use((req, res) => {
     res.status(404).json({ error: 'Nie znaleziono takiej ścieżki' });
 });
 
+const connectDB = async () => {
+    try {
+        await mongoose.connect(process.env.MONGO_URI);
+        console.log('Połączono z MongoDB w Dockerze');
+    } catch (err) {
+        console.error('Błąd połączenia z bazą:', err.message);
+        process.exit(1); 
+    }
+};
+connectDB();
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Serwer wystartował poprawnie. Adres: http://localhost:${PORT}`);
