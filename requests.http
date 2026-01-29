@@ -1,0 +1,22 @@
+### - Testy rejestracji - 
+
+### Test statusu serwera
+GET http://localhost:3000/
+
+### Rejestracja nowego użytkownika
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+    "username": "Gracz1",
+    "password": "TajneHaslo123"
+}
+
+### Próba rejestracji tego samego użytkownika (powinien być błąd 400)
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+    "username": "Gracz1",
+    "password": "TajneHaslo123"
+}

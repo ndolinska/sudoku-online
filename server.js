@@ -2,9 +2,12 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 
+const authRoutes = require('./src/Routes/auth')
+
 const app = express();
 
 app.use(express.json());
+app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
     res.status(200).json({
