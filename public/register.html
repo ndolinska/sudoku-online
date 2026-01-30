@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Rejestracja - Sudoku Battle</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="auth-card">
+        <h2>Załóż konto</h2>
+        <form id="registerForm">
+            <input type="text" id="username" placeholder="Login" required minlength="3">
+            <input type="password" id="password" placeholder="Hasło" required minlength="6">
+            <button type="submit">Zarejestruj się</button>
+        </form>
+        <div id="message"></div>
+        <p class="link-text">Masz już konto? <a href="login.html">Zaloguj się</a></p>
+    </div>
+    <script src="scripts/register.js"></script>
+</body>
+</html>

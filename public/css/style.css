@@ -1,0 +1,89 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    /* ZMIANA: Jasne tło strony (lekki szary/niebieskawy odcień) */
+    background: #f4f6f8; 
+    /* ZMIANA: Ciemny kolor tekstu */
+    color: #333333;      
+}
+
+.auth-card {
+    /* ZMIANA: Białe tło karty */
+    background: #ffffff; 
+    padding: 2.5rem;
+    border-radius: 12px;
+    /* ZMIANA: Delikatniejszy cień, aby nie był zbyt "ciężki" na jasnym tle */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+    width: 350px;
+    text-align: center;
+}
+
+h2 { 
+    margin-bottom: 1.5rem; 
+    /* Ten kolor jest OK, ale można go lekko przyciemnić dla kontrastu */
+    color: #007bff; 
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 6px;
+    /* ZMIANA: Jasne obramowanie */
+    border: 1px solid #ccc;  
+    /* ZMIANA: Białe tło inputa */
+    background: #ffffff;     
+    /* ZMIANA: Ciemny tekst wpisywany */
+    color: #333333;          
+    box-sizing: border-box;
+    transition: border-color 0.3s; /* Dodano dla płynności */
+}
+
+/* Opcjonalnie: Dodatkowy efekt po kliknięciu w pole */
+input:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #007bff;
+    color: white; /* Tekst na przycisku pozostaje biały */
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 10px;
+}
+
+button:hover { 
+    background: #0056b3; 
+}
+
+.link-text {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    /* ZMIANA: Szary tekst pomocniczy (nie za jasny) */
+    color: #666666; 
+}
+
+.link-text a { 
+    color: #007bff; 
+    text-decoration: none; 
+}
+
+.link-text a:hover {
+    text-decoration: underline;
+}
+
+#message { 
+    margin-top: 1rem; 
+    min-height: 1.2rem; 
+    font-size: 0.9rem; 
+}
