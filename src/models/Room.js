@@ -32,7 +32,12 @@ const RoomSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    scores: {
+        host: { type: Number, default: 0 },
+        opponent: { type: Number, default: 0 }
+    },
+    winner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null }
 });
 
 module.exports = mongoose.model('Room', RoomSchema);

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Sudoku Battle - Gra</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/gamestyle.css"> 
+</head>
+<body>
+    <div id="waiting-overlay" class="active">
+        <div class="overlay-content">
+            <h2>Oczekiwanie na przeciwnika...</h2>
+            <p>Nie odświeżaj strony.</p>
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <header class="game-header">
+            <div class="player-info host">Host: <span id="host-name">...</span>
+            <div class="score">PKT: <span id="host-score">0</span></div></div>
+            <div class="vs">VS</div>
+            <div class="player-info opponent">Przeciwnik: <span id="opponent-name">???</span>
+            <div class="score">PKT: <span id="opponent-score">0</span></div></div>
+        </header>
+
+        <div id="sudoku-grid" class="sudoku-grid hidden"></div>
+
+        <div class="game-controls">
+             <button id="leave-btn" style="background: #dc3545;">Opuść grę</button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="scripts/game.js"></script>
+</body>
+</html>

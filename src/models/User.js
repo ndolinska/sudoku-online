@@ -16,7 +16,8 @@ const UserSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    totalPoints: { type: Number, default: 0 }
 });
 
 module.exports = mongoose.model('User', UserSchema);

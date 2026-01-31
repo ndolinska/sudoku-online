@@ -60,13 +60,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             const res = await fetch('/rooms', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ difficulty: 'medium' })
+                body: JSON.stringify({ difficulty: 'easy' })
             });
             
             if (res.ok) {
                 const newRoom = await res.json();
                 socket.emit('newRoomCreated', newRoom);
-                fetchRooms();
+                window.location.href = `game.html?id=${newRoom.roomId}`;
             }}
         catch{
             alert("Nie udało się stworzyć pokoju")
@@ -78,3 +78,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     fetchRooms(); 
 });
+window.joinRoom = async function(roomId) {
+    try {
+        const response = await fetch(`/rooms/${roomId}/join`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            window.location.href = `game.html?id=${roomId}`;
+        } else {
+            alert(data.message || 'Nie udało się dołączyć.');
+            location.reload(); 
+        }
+    } catch (err) {
+        console.error('Błąd:', err);
+        alert('Błąd połączenia.');
+    }
+};

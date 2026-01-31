@@ -6,9 +6,10 @@ const path = require('path');
 const http = require('http');
 const { Server } = require('socket.io');
 
-
 const authRoutes = require('./src/routes/auth');
 const roomRoutes = require('./src/routes/rooms');
+
+const socketHandler = require('./src/socket');
 
 const app = express();
 const server = http.createServer(app);
@@ -20,6 +21,7 @@ app.use('/auth', authRoutes);
 app.use('/rooms', roomRoutes)
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.get('/', (req, res) => {
     res.status(200).json({
         status: 'online',
@@ -27,14 +29,8 @@ app.get('/', (req, res) => {
         message: 'Serwer Sudoku Battle działa!'
     });
 });
-
-io.on('connection', (socket) => {
-    socket.on('newRoomCreated', (data) => {
-        socket.broadcast.emit('updateRoomList', data);
-    });
-});
-
-
+app.set('io', io);
+socketHandler(io);
 app.use((req, res) => {
     res.status(404).json({ error: 'Nie znaleziono takiej ścieżki' });
 });
