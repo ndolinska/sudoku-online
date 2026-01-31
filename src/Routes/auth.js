@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 
 const auth = require('../middleware/auth');
 
-// POST /api/auth/register | rejestracja nowego użytkownika
+// POST /auth/register | rejestracja nowego użytkownika
 router.post('/register', async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -26,11 +26,11 @@ router.post('/register', async (req, res) => {
         await user.save();
         res.status(201).json({ message: 'Użytkownik zarejestrowany pomyślnie' });
 
-    } catch (err) {
+    } catch {
         res.status(500).json({ error: 'Błąd serwera' });
     }
 });
-// POST /api/auth/login | logowanie 
+// POST /auth/login | logowanie 
 router.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -68,19 +68,19 @@ router.post('/login', async (req, res) => {
         res.status(500).json({ error: 'Błąd serwera' });
     }
 });
-// POST /api/auth/logout | wylogowanie 
+// POST /auth/logout | wylogowanie 
 router.post('/logout', (req, res) => {
     res.clearCookie('token');
     res.status(200).json({ message: 'Wylogowano pomyślnie' });
 });
 
-// GET /api/auth/me | dbamy o sesje z tokenem
+// GET /auth/me | dbamy o sesje z tokenem
 router.get('/me', auth, async (req, res) => {
     try {
         // req.user pochodzi z naszego middleware
         const user = await User.findById(req.user.userId).select('-password'); // Pobieramy bez hasła
         res.json(user);
-    } catch (err) {
+    } catch {
         res.status(500).send('Błąd serwera');
     }
 });

@@ -5,7 +5,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     const msgDiv = document.getElementById('message');
 
     try {
-        const response = await fetch('/api/auth/login', {
+        const response = await fetch('/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password })
@@ -16,6 +16,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
         if (response.ok) {
             msgDiv.style.color = 'lightgreen';
             msgDiv.innerText = 'Zalogowano pomyślnie!';
+            window.location.href = 'lobby.html';
         } else {
             msgDiv.style.color = '#ff6b6b';
             msgDiv.innerText = data.message || 'Błąd logowania';

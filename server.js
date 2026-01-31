@@ -3,15 +3,21 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const http = require('http');
+const { Server } = require('socket.io');
 
 
-const authRoutes = require('./src/Routes/auth')
+const authRoutes = require('./src/routes/auth');
+const roomRoutes = require('./src/routes/rooms');
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
 
 app.use(express.json());
 app.use(cookieParser());
-app.use('/api/auth', authRoutes);
+app.use('/auth', authRoutes);
+app.use('/rooms', roomRoutes)
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
@@ -21,6 +27,13 @@ app.get('/', (req, res) => {
         message: 'Serwer Sudoku Battle działa!'
     });
 });
+
+io.on('connection', (socket) => {
+    socket.on('newRoomCreated', (data) => {
+        socket.broadcast.emit('updateRoomList', data);
+    });
+});
+
 
 app.use((req, res) => {
     res.status(404).json({ error: 'Nie znaleziono takiej ścieżki' });
@@ -37,6 +50,6 @@ const connectDB = async () => {
 };
 connectDB();
 const PORT = 3000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Serwer wystartował poprawnie. Adres: http://localhost:${PORT}`);
 });

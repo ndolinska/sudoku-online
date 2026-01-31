@@ -5,18 +5,14 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    /* ZMIANA: Jasne tło strony (lekki szary/niebieskawy odcień) */
     background: #f4f6f8; 
-    /* ZMIANA: Ciemny kolor tekstu */
     color: #333333;      
 }
 
 .auth-card {
-    /* ZMIANA: Białe tło karty */
     background: #ffffff; 
     padding: 2.5rem;
     border-radius: 12px;
-    /* ZMIANA: Delikatniejszy cień, aby nie był zbyt "ciężki" na jasnym tle */
     box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
     width: 350px;
     text-align: center;
@@ -24,7 +20,6 @@ body {
 
 h2 { 
     margin-bottom: 1.5rem; 
-    /* Ten kolor jest OK, ale można go lekko przyciemnić dla kontrastu */
     color: #007bff; 
 }
 
@@ -33,17 +28,13 @@ input {
     padding: 12px;
     margin: 10px 0;
     border-radius: 6px;
-    /* ZMIANA: Jasne obramowanie */
     border: 1px solid #ccc;  
-    /* ZMIANA: Białe tło inputa */
     background: #ffffff;     
-    /* ZMIANA: Ciemny tekst wpisywany */
     color: #333333;          
     box-sizing: border-box;
-    transition: border-color 0.3s; /* Dodano dla płynności */
+    transition: border-color 0.3s;
 }
 
-/* Opcjonalnie: Dodatkowy efekt po kliknięciu w pole */
 input:focus {
     outline: none;
     border-color: #007bff;
@@ -53,7 +44,7 @@ button {
     width: 100%;
     padding: 12px;
     background: #007bff;
-    color: white; /* Tekst na przycisku pozostaje biały */
+    color: white;
     border: none;
     border-radius: 6px;
     font-weight: bold;
@@ -69,7 +60,6 @@ button:hover {
 .link-text {
     margin-top: 1.5rem;
     font-size: 0.9rem;
-    /* ZMIANA: Szary tekst pomocniczy (nie za jasny) */
     color: #666666; 
 }
 
@@ -86,4 +76,39 @@ button:hover {
     margin-top: 1rem; 
     min-height: 1.2rem; 
     font-size: 0.9rem; 
+}
+
+.auth-card.lobby-card {
+    width: 500px;
+    max-width: 95vw;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #e0e0e0;
+    margin: 20px 0;
+}
+
+.rooms-label {
+    margin-top: 20px;
+    font-weight: 600;
+    color: #444;
+}
+
+#rooms-list {
+    color: #777; 
+    font-style: italic;
+    background: #f9f9f9; 
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 5px;
+}
+
+#logout-btn {
+    background: #dc3545;
+    margin-top: 30px;
+}
+
+#logout-btn:hover {
+    background: #c82333;
 }
