@@ -6,21 +6,32 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="auth-card lobby-card">
-        <h2>Witaj, <span id="user-display">Graczu</span>!</h2>
-        <p>Jesteś w lobby Sudoku Battle.</p>
+    <nav class="navbar">
+        <div class="nav-left">
+            <h1 class="logo">SUDOKU BATTLE</h1>
+        </div>
         
-        <hr>
+        <div class="nav-center">
+            <span class="welcome-text">Witaj, <span id="user-display">Graczu</span>! Z kim zmierzysz się dzisiaj?</span>
+        </div>
 
-        <div id="room-actions">
-            <button id="create-room-btn">Stwórz nowy pokój</button>
-            <p id="rooms-label">Dostępne pokoje:</p>
-            <div id="rooms-list">
+        <div class="nav-right">
+            <button id="logout-btn">Wyloguj</button>
+        </div>
+    </nav>
+
+    <main class="lobby-container">
+        
+        <div class="action-header">
+            <h2>Dostępne pokoje:</h2>
+            <button id="create-room-btn" class="btn-create">+ Stwórz Pokój</button>
+        </div>
+        
+        <hr class="divider">
+            <div id="rooms-list" class="rooms-grid">
                 Brak aktywnych pokoi...
             </div>
         </div>
-
-        <button id="logout-btn">Wyloguj się</button>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="scripts/lobby.js"></script>

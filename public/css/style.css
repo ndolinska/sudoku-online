@@ -1,14 +1,123 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    display: block;
     margin: 0;
     background: #f4f6f8; 
     color: #333333;      
 }
+.navbar {
+    background: linear-gradient(to right, #89CFF0, #4682B4); 
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.logo {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.welcome-text {
+    font-size: 1.5rem;
+    font-weight: 300;
+}
+.lobby-container {
+    padding: 20px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
 
+.action-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.action-header h2 {
+    color: #999;
+    font-weight: normal;
+    margin: 0;
+}
+.btn-create {
+    width: auto;
+    background-color: #28a745;
+    padding: 10px 20px;
+    margin: 0;
+}
+.divider {
+    border-top: 2px solid #ddd;
+    margin: 10px 0 30px 0;
+}
+.rooms-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+.room-card {
+    border: 2px solid #777;
+    width: 300px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 140px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+}
+
+.room-info h3 {
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+    color: #555;
+    font-weight: normal;
+}
+
+.room-info p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.room-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.player-count {
+    font-size: 1.2rem;
+    color: #555;
+    font-weight: bold;
+}
+
+.btn-join {
+    background-color: #3344cc; 
+    color: white;
+    border: none;
+    padding: 8px 30px;
+    border-radius: 20px; 
+    cursor: pointer;
+    font-weight: bold;
+    width: auto; 
+    margin: 0;
+    transition: background 0.2s;
+}
+
+.btn-join:hover {
+    background-color: #2233aa;
+}
+.centered-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; 
+    padding-top: 50px;
+    min-height: 80vh;
+}
 .auth-card {
     background: #ffffff; 
     padding: 2.5rem;
@@ -78,31 +187,6 @@ button:hover {
     font-size: 0.9rem; 
 }
 
-.auth-card.lobby-card {
-    width: 500px;
-    max-width: 95vw;
-}
-
-hr {
-    border: 0;
-    border-top: 1px solid #e0e0e0;
-    margin: 20px 0;
-}
-
-.rooms-label {
-    margin-top: 20px;
-    font-weight: 600;
-    color: #444;
-}
-
-#rooms-list {
-    color: #777; 
-    font-style: italic;
-    background: #f9f9f9; 
-    padding: 10px;
-    border-radius: 6px;
-    margin-top: 5px;
-}
 
 #logout-btn {
     background: #dc3545;

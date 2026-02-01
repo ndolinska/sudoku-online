@@ -40,15 +40,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
     const renderRooms = (rooms) => {
         if (rooms.length === 0) {
-            roomsList.innerHTML = 'Brak aktywnych pokoi...';
+            roomsList.innerHTML = '<p style="width:100%; text-align:center; color:#888;">Brak aktywnych pokoi. Stwórz pierwszy!</p>';
             return;
         }
-        roomsList.innerHTML = rooms.map(room => `
-            <div class="room-item" style="border: 1px solid #444; margin: 10px 0; padding: 10px; border-radius: 8px;">
-                <span>Pokój gracza: <strong>${room.host.username}</strong> (${room.difficulty})</span>
-                <button onclick="joinRoom('${room._id}')" style="width: auto; margin-left: 20px; padding: 5px 15px;">Dołącz</button>
+        roomsList.innerHTML = rooms.map(room => {
+            const playerCount = room.opponent ? '2/2' : '1/2';
+            return `
+            <div class="room-card">
+                <div class="room-info">
+                    <h3>Pokój gracza <strong>${room.host.username}</strong></h3>
+                    <p>Trudność: <strong>${room.difficulty}</strong></p>
+                </div>
+                
+                <div class="room-footer">
+                    <span class="player-count">${playerCount}</span>
+                    <button onclick="joinRoom('${room._id}')" class="btn-join">Dołącz</button>
+                </div>
             </div>
-        `).join('');
+        `}).join('');
     };
     logoutBtn.addEventListener('click', async () => {
         await fetch('/auth/logout', { method: 'POST' });
