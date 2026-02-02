@@ -3,6 +3,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const roomsList = document.getElementById('rooms-list');
     const userDisplay = document.getElementById('user-display');
     const logoutBtn = document.getElementById('logout-btn');
+    const createBtn = document.getElementById('create-room-btn');
+
+    const searchInput = document.getElementById('room-search-input');
+    const searchBtn = document.getElementById('search-btn');
     try {
         const response = await fetch('/auth/me');
         if (!response.ok) {
@@ -29,15 +33,28 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    const fetchRooms = async () => {
+    const fetchRooms = async (searchQuery = '') => {
         try {
-            const res = await fetch('/rooms');
+            let url = '/rooms';
+            if (searchQuery) {
+                url += `?search=${encodeURIComponent(searchQuery)}`;
+            }
+            const res = await fetch(url);
             const rooms = await res.json();
             renderRooms(rooms);
         } catch (err) {
             console.error('Błąd pobierania pokoi', err);
+            roomsList.innerHTML = '<p>Błąd połączenia z serwerem.</p>';
         }
     };
+    searchBtn.addEventListener('click', () => {
+        fetchRooms(searchInput.value.trim());
+    });
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            fetchRooms(searchInput.value.trim());
+        }
+    });
     const renderRooms = (rooms) => {
         if (rooms.length === 0) {
             roomsList.innerHTML = '<p style="width:100%; text-align:center; color:#888;">Brak aktywnych pokoi. Stwórz pierwszy!</p>';
@@ -45,10 +62,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         roomsList.innerHTML = rooms.map(room => {
             const playerCount = room.opponent ? '2/2' : '1/2';
+            const hostName = room.host ? room.host.username : 'Nieznany (Gracz usunięty)';
             return `
             <div class="room-card">
                 <div class="room-info">
-                    <h3>Pokój gracza <strong>${room.host.username}</strong></h3>
+                    <h3>Pokój gracza <strong>${hostName}</strong></h3>
                     <p>Trudność: <strong>${room.difficulty}</strong></p>
                 </div>
                 
@@ -64,7 +82,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.location.href = 'login.html';
     });
 
-    document.getElementById('create-room-btn').addEventListener('click', async () => {
+    createBtn.addEventListener('click', async () => {
         try{
             const res = await fetch('/rooms', {
                 method: 'POST',
@@ -83,7 +101,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     socket.on('updateRoomList', () => {
-        fetchRooms();
+        fetchRooms(searchInput.value.trim());
     });
     fetchRooms(); 
 });
@@ -95,9 +113,7 @@ window.joinRoom = async function(roomId) {
                 'Content-Type': 'application/json'
             }
         });
-
         const data = await response.json();
-
         if (response.ok) {
             window.location.href = `game.html?id=${roomId}`;
         } else {

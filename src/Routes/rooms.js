@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Room = require('../models/Room');
+const User = require('../models/User');
+
 const auth = require('../middleware/auth');
 const { getSudoku } = require('sudoku-gen');
-// Post /rooms/ | tworzymy nowy pokój
+// Post /rooms | tworzymy nowy pokój
 router.post('/', auth, async (req, res) => {
     try {
         const { difficulty } = req.body;
@@ -30,10 +32,19 @@ router.post('/', auth, async (req, res) => {
     }
 });
 
-// GET /rooms/ | pobieramy obecne pokoje
+// GET /rooms | pobieramy obecne pokoje - w tym od razu filtrujemy je zgodnie z query
 router.get('/', auth, async (req, res) => {
     try {
-        const rooms = await Room.find({ status: 'waiting' })
+        const { search } = req.query;
+        let filter = { status: 'waiting' }; 
+        if (search) {
+            const matchingUsers = await User.find({ 
+                username: { $regex: search, $options: 'i' } 
+            }).select('_id'); 
+            const userIds = matchingUsers.map(user => user._id);
+            filter.host = { $in: userIds };
+        }
+        const rooms = await Room.find(filter)
                                 .populate('host', 'username')
                                 .sort({ createdAt: -1 });
         res.json(rooms);
