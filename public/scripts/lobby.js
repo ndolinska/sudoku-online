@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const searchInput = document.getElementById('room-search-input');
     const searchBtn = document.getElementById('search-btn');
+
+    const difficultySelect = document.getElementById('difficulty-select');
     try {
         const response = await fetch('/auth/me');
         if (!response.ok) {
@@ -83,11 +85,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     createBtn.addEventListener('click', async () => {
+        const selectedDifficulty = difficultySelect.value;
         try{
             const res = await fetch('/rooms', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ difficulty: 'easy' })
+                body: JSON.stringify({ difficulty: selectedDifficulty })
             });
             
             if (res.ok) {

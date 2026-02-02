@@ -208,6 +208,16 @@ button:hover {
     border-radius: 5px;
     cursor:pointer;
 }
+.difficulty-dropdown {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: white;
+    color: #333;
+    cursor: pointer;
+    font-size: 1rem;
+    outline: none;
+}
 
 #logout-btn {
     background: #dc3545;
