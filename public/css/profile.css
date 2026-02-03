@@ -1,0 +1,38 @@
+.btn-danger {
+    background-color: #dc3545;
+    margin-top: 20px;
+}
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Szary przycisk (np. powrót) */
+.btn-secondary {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #6c757d;
+    color:white;
+    margin-top: 10px;
+    text-decoration: none;
+    display: inline-block; /* Żeby zachowywał się jak przycisk, jeśli to <a> */
+    text-align: center;
+    box-sizing: border-box; /* Żeby padding nie psuł szerokości */
+}
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Wygląd statystyk w profilu */
+.profile-stats {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+.profile-stats p {
+    margin: 5px 0;
+    font-size: 1.1rem;
+    color: #444;
+}

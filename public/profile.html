@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Twój Profil - Sudoku Battle</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/profile.css">
+</head>
+<body>
+    <nav class="navbar simple">
+        <h1 class="logo">Sudoku Battle</h1>
+    </nav>
+
+    <div class="centered-wrapper">
+        <div class="auth-card">
+            <h2>Zarządzanie kontem</h2>
+            <div class="profile-stats">
+                <p>Użytkownik: <strong id="display-username">...</strong></p>
+                <p>Twoje punkty: <strong id="display-points" style="color: #28a745;">0</strong></p>
+            </div>
+
+            <form id="profile-form">
+                <label for="new-username" style="display:block; text-align:left; color:#666; font-size:0.9rem;">Zmień nazwę:</label>
+                <input type="text" id="new-username" placeholder="Nowa nazwa użytkownika">
+                
+                <label for="new-password" style="display:block; text-align:left; color:#666; font-size:0.9rem;">Zmień hasło:</label>
+                <input type="password" id="new-password" placeholder="Nowe hasło (min. 6 znaków)">
+                
+                <button type="submit">Zapisz zmiany</button>
+            </form>
+
+            <div id="message"></div>
+
+            <hr class="divider">
+
+            <button id="delete-btn" class="btn-danger">Usuń konto trwale</button>
+            
+            <a href="lobby.html" class="btn-secondary">Wróć do Lobby</a>
+        </div>
+    </div>
+
+    <script src="scripts/profile.js"></script>
+</body>
+</html>

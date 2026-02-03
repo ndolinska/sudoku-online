@@ -53,17 +53,19 @@ module.exports = (io) => {
                         
                         // Obliczanie punktów końcowych z mnożnikiem
                         const multiplier = DIFFICULTY_MULTIPLIERS[room.difficulty] || 1;
+                        const hostFinal = Math.round(room.scores.host * multiplier);
+                        const oppFinal = Math.round(room.scores.opponent * multiplier);
+
+                        // Zapis do bazy User
+                        await User.findByIdAndUpdate(room.host, { $inc: { totalPoints: hostFinal } });
+                        await User.findByIdAndUpdate(room.opponent, { $inc: { totalPoints: oppFinal } });
 
                         // Zwycięzca
                         let winnerName = "Remis";
-                        if (room.scores.host > room.scores.opponent) {
-                            winnerName = "Host";
-                            const hostFinal = Math.round(room.scores.host * multiplier);
-                            await User.findByIdAndUpdate(room.host, { $inc: { totalPoints: hostFinal } })}
-                        else if (room.scores.opponent > room.scores.host) {
-                            winnerName = "Przeciwnik";
-                            const oppFinal = Math.round(room.scores.opponent * multiplier);
-                            await User.findByIdAndUpdate(room.opponent, { $inc: { totalPoints: oppFinal } })};
+                        if (room.scores.host > room.scores.opponent) winnerName = "Host";
+                        else if (room.scores.opponent > room.scores.host) winnerName = "Dołączający";
+
+                        await room.save();
 
                         await room.save();
                         

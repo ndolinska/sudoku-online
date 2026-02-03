@@ -85,4 +85,77 @@ router.get('/me', auth, async (req, res) => {
     }
 });
 
+const Room = require('../models/Room'); // <-- DODAJ TO NA SAMEJ GÓRZE PLIKU (potrzebne do czyszczenia pokoi przy usuwaniu konta)
+
+// ... (reszta importów i endpointy register/login/logout bez zmian) ...
+
+
+// PATCH /auth/me | Aktualizacja danych użytkownika (UPDATE)
+router.patch('/me', auth, async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const userId = req.user.userId;
+
+        // Znajdź użytkownika
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Użytkownik nie znaleziony' });
+        }
+
+        // 1. Jeśli użytkownik chce zmienić nazwę
+        if (username && username !== user.username) {
+            // Sprawdź czy nowa nazwa nie jest zajęta
+            const existingUser = await User.findOne({ username });
+            if (existingUser) {
+                return res.status(400).json({ message: 'Ta nazwa użytkownika jest już zajęta' });
+            }
+            user.username = username;
+        }
+
+        // 2. Jeśli użytkownik chce zmienić hasło
+        if (password) {
+            if (password.length < 6) {
+                return res.status(400).json({ message: 'Hasło musi mieć min. 6 znaków' });
+            }
+            const salt = await bcrypt.genSalt(10);
+            user.password = await bcrypt.hash(password, salt);
+        }
+
+        await user.save();
+
+        res.json({ 
+            message: 'Dane zaktualizowane pomyślnie', 
+            user: { username: user.username, totalPoints: user.totalPoints } 
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Błąd serwera podczas aktualizacji' });
+    }
+});
+
+// DELETE /auth/me | Usuwanie konta (DELETE)
+router.delete('/me', auth, async (req, res) => {
+    try {
+        const userId = req.user.userId;
+
+        // Usuń użytkownika
+        const deletedUser = await User.findByIdAndDelete(userId);
+        if (!deletedUser) {
+            return res.status(404).json({ message: 'Użytkownik nie znaleziony' });
+        }
+        //  Usuń pokoje, które ten użytkownik stworzył (jako host) żeby nie wisiały "puste" pokoje w lobby
+        await Room.deleteMany({ host: userId });
+
+       // Czyścimy ciasteczko sesyjne
+        res.clearCookie('token');
+
+        res.json({ message: 'Konto zostało usunięte' });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Błąd serwera podczas usuwania konta' });
+    }
+});
+
 module.exports = router;
