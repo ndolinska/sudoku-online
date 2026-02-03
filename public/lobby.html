@@ -43,8 +43,21 @@
                 Brak aktywnych pokoi...
             </div>
         </div>
+        <aside class="chat-section">
+                    <h3>💬 Czat Globalny</h3>
+                    <div id="mqtt-status" style="font-size: 0.8rem; color: gray; margin-bottom: 5px;">Rozłączono</div>
+                    <div id="chat-window" style="height: 250px; overflow-y: auto; border: 1px solid #eee; padding: 10px; font-size: 0.9rem; background: #fafafa; margin-bottom: 10px;">
+                        </div>
+                    <div style="display: flex; gap: 5px;">
+                        <input type="text" id="chat-input" placeholder="Napisz coś..." style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                        <button id="chat-send" class="btn-join" style="padding: 5px 15px; font-size: 0.9rem;">➤</button>
+                    </div>
+                </div>
+            </aside>
     </div>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
     <script src="scripts/lobby.js"></script>
+    <script src="scripts/chat.js"></script>
 </body>
 </html>

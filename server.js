@@ -8,7 +8,9 @@ const { Server } = require('socket.io');
 
 const authRoutes = require('./src/routes/auth');
 const roomRoutes = require('./src/routes/rooms');
+const chatRoutes = require('./src/routes/chat');
 
+const { mqttHandler } = require('./src/mqttHandler');
 const socketHandler = require('./src/socket');
 
 const app = express();
@@ -18,7 +20,8 @@ const io = new Server(server);
 app.use(express.json());
 app.use(cookieParser());
 app.use('/auth', authRoutes);
-app.use('/rooms', roomRoutes)
+app.use('/rooms', roomRoutes);
+app.use('/chat', chatRoutes);
 app.use(express.static(path.join(__dirname, 'public')));
 
 
@@ -31,6 +34,7 @@ app.get('/', (req, res) => {
 });
 app.set('io', io);
 socketHandler(io);
+mqttHandler();
 app.use((req, res) => {
     res.status(404).json({ error: 'Nie znaleziono takiej ścieżki' });
 });

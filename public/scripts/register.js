@@ -15,7 +15,7 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
 
         if (response.ok) {
             msgDiv.style.color = 'lightgreen';
-            msgDiv.innerText = 'Konto stworzone! Za chwilę zostaniesz przekierowany...';
+            msgDiv.innerText = 'Konto stworzone! Za chwilę zaloguj się na nowe konto...';
             setTimeout(() => window.location.href = 'login.html', 2000);
         } else {
             msgDiv.style.color = '#ff6b6b';

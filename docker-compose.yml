@@ -8,6 +8,15 @@ services:
       - "27017:27017" 
     volumes:
       - mongo-data:/data/db 
-
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: sudoku_mqtt_container
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
 volumes:
   mongo-data:

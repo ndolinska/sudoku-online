@@ -5,6 +5,7 @@ const User = require('../models/User');
 
 const auth = require('../middleware/auth');
 const { getSudoku } = require('sudoku-gen');
+const { broadcastMessage } = require('../mqttHandler');
 // Post /rooms | tworzymy nowy pokój
 router.post('/', auth, async (req, res) => {
     try {
@@ -20,6 +21,12 @@ router.post('/', auth, async (req, res) => {
         });
 
         const room = await newRoom.save();
+
+        broadcastMessage('sudoku/system', {
+            type: 'system',
+            message: `Gracz ${req.user.username} utworzył pokój`,
+            timestamp: new Date()
+        });
 
         res.status(201).json({
             message: 'Pokój został utworzony',
