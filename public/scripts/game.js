@@ -14,8 +14,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     if(userRes.ok) {
     const userData = await userRes.json();
     currentUserId = userData._id;
-    }
-
+    }else {
+        window.location.href = 'login.html';
+            return;
+        }
     if (!roomId) {
         alert('Brak ID pokoju!');
         window.location.href = 'lobby.html';

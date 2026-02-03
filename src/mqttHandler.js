@@ -8,10 +8,10 @@ const mqttHandler = () => {
 
     mqttClient.on('connect', () => {
         console.log('Serwis MQTT (Backend) podłączony');
-        // Backend nasłuchuje już tylko systemowych rzeczy, 
+        // Backend nasłuchuje systemowych rzeczy, 
         // bo chat jest obsługiwany przez REST API -> MQTT
         mqttClient.subscribe('sudoku/system');
-
+        // A także możliwość wysyłania wiadomości na chat z klienta
         mqttClient.subscribe('sudoku/chat/external');
     });
 

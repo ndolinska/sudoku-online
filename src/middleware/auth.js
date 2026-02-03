@@ -11,6 +11,7 @@ const auth = (req, res, next) => {
         req.user = decoded;
         next();         //Przejdź dalej (do właściwej trasy)
     } catch (err) {
+        console.log(err)
         res.status(401).json({ message: 'Token jest nieprawidłowy lub wygasł.' });
     }
 };

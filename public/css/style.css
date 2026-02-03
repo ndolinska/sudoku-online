@@ -227,3 +227,24 @@ button:hover {
 #logout-btn:hover {
     background: #c82333;
 }
+
+#mqtt-status{
+    font-size: 0.8rem;
+    color: gray;
+    margin-bottom: 5px
+}
+#chat-window{
+    height: 250px; 
+    overflow-y: auto;
+    border: 1px solid #eee; 
+    padding: 10px; 
+    font-size: 0.9rem; 
+    background: #fafafa; 
+    margin-bottom: 10px;
+}
+#chat-input{
+    flex: 1; 
+    padding: 8px; 
+    border: 1px solid #ccc;
+    border-radius: 4px
+}

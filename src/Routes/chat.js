@@ -25,6 +25,7 @@ router.post('/', auth, async (req, res) => {
 
         res.status(201).json(newMsg);
     } catch (err) {
+        console.error(err);
         res.status(500).json({ error: 'Błąd wysyłania wiadomości' });
     }
 });
@@ -35,6 +36,7 @@ router.get('/history', auth, async (req, res) => {
         const messages = await ChatMessage.find().sort({ createdAt: -1 }).limit(50);
         res.json(messages.reverse());
     } catch (err) {
+        console.error(err);
         res.status(500).json({ error: 'Błąd pobierania historii' });
     }
 });
@@ -65,11 +67,12 @@ router.patch('/:id', auth, async (req, res) => {
 
         res.json(msg);
     } catch (err) {
+        console.error(err);
         res.status(500).json({ error: 'Błąd edycji' });
     }
 });
 
-// DELETE - Usuń wiadomość (DELETE)
+// DELETE - Usuń wiadomość 
 router.delete('/:id', auth, async (req, res) => {
     try {
         const msgId = req.params.id;
@@ -90,6 +93,7 @@ router.delete('/:id', auth, async (req, res) => {
 
         res.json({ message: 'Usunięto' });
     } catch (err) {
+        console.error(err);
         res.status(500).json({ error: 'Błąd usuwania' });
     }
 });

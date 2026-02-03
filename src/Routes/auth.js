@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+const Room = require('../models/Room');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -65,6 +66,7 @@ router.post('/login', async (req, res) => {
         });
 
     } catch {
+        console.error(err);
         res.status(500).json({ error: 'Błąd serwera' });
     }
 });
@@ -81,14 +83,10 @@ router.get('/me', auth, async (req, res) => {
         const user = await User.findById(req.user.userId).select('-password'); // Pobieramy bez hasła
         res.json(user);
     } catch {
+        console.error(err);
         res.status(500).send('Błąd serwera');
     }
 });
-
-const Room = require('../models/Room'); // <-- DODAJ TO NA SAMEJ GÓRZE PLIKU (potrzebne do czyszczenia pokoi przy usuwaniu konta)
-
-// ... (reszta importów i endpointy register/login/logout bez zmian) ...
-
 
 // PATCH /auth/me | Aktualizacja danych użytkownika (UPDATE)
 router.patch('/me', auth, async (req, res) => {
@@ -102,7 +100,7 @@ router.patch('/me', auth, async (req, res) => {
             return res.status(404).json({ message: 'Użytkownik nie znaleziony' });
         }
 
-        // 1. Jeśli użytkownik chce zmienić nazwę
+        // Jeśli użytkownik chce zmienić nazwę
         if (username && username !== user.username) {
             // Sprawdź czy nowa nazwa nie jest zajęta
             const existingUser = await User.findOne({ username });
@@ -112,7 +110,7 @@ router.patch('/me', auth, async (req, res) => {
             user.username = username;
         }
 
-        // 2. Jeśli użytkownik chce zmienić hasło
+        //  Jeśli użytkownik chce zmienić hasło
         if (password) {
             if (password.length < 6) {
                 return res.status(400).json({ message: 'Hasło musi mieć min. 6 znaków' });

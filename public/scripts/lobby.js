@@ -21,20 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch {
         window.location.href = 'login.html';
     }
-
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', async () => {
-            try {
-                // Usuwamy ciasteczko
-                await fetch('/auth/logout', { method: 'POST' });
-                // Wracamy do logowania
-                window.location.href = 'login.html';
-            } catch (err) {
-                console.error('Błąd wylogowania:', err);
-            }
-        });
-    }
-
+    
     const fetchRooms = async (searchQuery = '') => {
         try {
             let url = '/rooms';

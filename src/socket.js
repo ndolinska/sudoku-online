@@ -66,8 +66,6 @@ module.exports = (io) => {
                         else if (room.scores.opponent > room.scores.host) winnerName = "Dołączający";
 
                         await room.save();
-
-                        await room.save();
                         
                         io.to(roomId).emit('gameOver', { 
                             winner: winnerName,

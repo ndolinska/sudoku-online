@@ -33,8 +33,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const data = JSON.parse(payload.toString()); // Teraz dane to JSON
 
         if (topic === 'sudoku/chat/new') {
-            // Jeśli to moja wiadomość, to już ją mam (Optimistic UI), ale dla pewności
-            // sprawdzamy czy nie ma duplikatu po ID, jeśli backend szybko odpowiedział
             if (!document.getElementById(`msg-${data._id}`)) {
                 appendMessageToUI(data);
                 scrollToBottom();
@@ -93,7 +91,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             buttonsHtml = `
                 <span style="float: right; display:flex; font-size: 0.8rem;">
                     <button class="edit-btn" data-id="${msg._id}" style="cursor:pointer; border:none; background:none; color:blue;">Edytuj</button>
-                    <button class="delete-btn" data-id="${msg._id}" style="cursor:pointer; border:none; background:none; color:red;">Usun</button>
+                    <button class="delete-btn" data-id="${msg._id}" style="cursor:pointer; border:none; background:none; color:red;">X</button>
                 </span>
             `;
         }

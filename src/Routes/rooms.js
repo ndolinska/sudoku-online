@@ -34,7 +34,8 @@ router.post('/', auth, async (req, res) => {
             difficulty: room.difficulty
         });
 
-    } catch {
+    } catch(err) {
+        console.error(err);
         res.status(500).json({ error: 'Błąd serwera podczas tworzenia pokoju' });
     }
 });
@@ -55,7 +56,8 @@ router.get('/', auth, async (req, res) => {
                                 .populate('host', 'username')
                                 .sort({ createdAt: -1 });
         res.json(rooms);
-    } catch {
+    } catch(err)  {
+        console.error(err);
         res.status(500).json({ error: 'Błąd podczas pobierania pokoi' });
     }
 });

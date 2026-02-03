@@ -34,3 +34,23 @@ Content-Type: application/json
 }
 ### Pobieramy liste pokoji
 GET http://localhost:3000/rooms
+
+### Edycja profilu (Zmiana hasła lub nazwy)
+PATCH http://localhost:3000/auth/me
+Content-Type: application/json
+
+{
+    "username": "GraczTestowy_Updated",
+    "password": "NoweHaslo123"
+}
+
+### Pobranie historii czatu
+GET http://localhost:3000/chat/history
+
+### Dodaj wiadomość do czatu
+POST http://localhost:3000/chat
+Content-Type: application/json
+
+{
+    "message": "Cześć! To test API."
+}
