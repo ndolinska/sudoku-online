@@ -2,9 +2,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const socket = io();
     const gridElement = document.getElementById('sudoku-grid');
     const overlay = document.getElementById('waiting-overlay');
-    const urlParams = new URLSearchParams(window.location.search);
+    const cancelBtn = document.getElementById('cancel-room-btn')
+    const urlParams = new URLSearchParams(window.location.search); 
     const roomId = urlParams.get('id');
     let currentUserId = null;
+
+    const hostName = document.getElementById('host-name');
+    const oppName = document.getElementById('opponent-name');
 
     const userRes = await fetch('/auth/me');
     if(userRes.ok) {
@@ -17,22 +21,44 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.location.href = 'lobby.html';
         return;
     }
-    socket.emit('joinGameRoom', roomId);
+    cancelBtn.addEventListener('click', async () => {
+        if (!confirm("Czy na pewno chcesz usunąć ten pokój?")) return;
 
+        try {
+            const res = await fetch(`/rooms/${roomId}`, {
+                method: 'DELETE'
+            });
+
+            if (res.ok) {
+                window.location.href = 'lobby.html';
+            } else {
+                const data = await res.json();
+                alert(data.message || "Błąd podczas usuwania pokoju");
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Błąd połączenia z serwerem");
+        }
+    });
+    socket.emit('joinGameRoom', { roomId, userId: currentUserId });
     const loadGameState = async () => {
         try {
             const response = await fetch(`/rooms/${roomId}`);
-            if (!response.ok) throw new Error('Błąd');
+            if (response.status === 404) {
+                alert('Ten pokój już nie istnieje.');
+                window.location.href = 'lobby.html';
+                return;
+            }
+            if (!response.ok) throw new Error('Błąd pobierania danych pokoju');
             const roomData = await response.json();
 
             // Ustawiamy nazwy
-            document.getElementById('host-name').innerText = roomData.host.username;
+            hostName.innerText = roomData.host.username;
             if (roomData.opponent) {
-                document.getElementById('opponent-name').innerText = roomData.opponent.username;
+                oppName.innerText = roomData.opponent.username;
             } else {
-                document.getElementById('opponent-name').innerText = "???";
+                oppName.innerText = "???";
             }
-
             if (roomData.status === 'waiting') {
                 overlay.classList.add('active');
                 gridElement.innerHTML = ''; 
@@ -42,6 +68,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         }} catch (err) {
             console.error(err);
+            window.location.href = 'lobby.html';
         }
     };
     const renderBoard = (boardString) => {
@@ -122,5 +149,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     socket.on('gameStarted', () => {
         loadGameState(); 
     });
+    socket.on('opponentLeft', () => {
+        if (overlay) {
+            overlay.innerHTML = `
+                <div>
+                    <h2 style="color: #dc3545;">Przeciwnik uciekł!</h2>
+                    <p>Gra anulowana.</p>
+                    <p>Za 3 sekundy wrócisz do lobby...</p>
+                </div>
+            `;
+            overlay.classList.add('active'); // Pokazujemy overlay
+        }
+        setTimeout(() => {
+            window.location.href = 'lobby.html';
+        }, 3000);
+        });
     loadGameState();
 });

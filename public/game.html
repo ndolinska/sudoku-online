@@ -10,8 +10,8 @@
     <div id="waiting-overlay" class="active">
         <div class="overlay-content">
             <h2>Oczekiwanie na przeciwnika...</h2>
-            <p>Nie odświeżaj strony.</p>
             <div class="spinner"></div>
+            <button id="cancel-room-btn">Anuluj i usuń pokój</button>
         </div>
     </div>
 
@@ -25,10 +25,6 @@
         </header>
 
         <div id="sudoku-grid" class="sudoku-grid hidden"></div>
-
-        <div class="game-controls">
-             <button id="leave-btn" style="background: #dc3545;">Opuść grę</button>
-        </div>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>

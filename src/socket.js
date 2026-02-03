@@ -11,9 +11,11 @@ const DIFFICULTY_MULTIPLIERS = {
 
 module.exports = (io) => {
     io.on('connection', (socket) => {
-        // Dołączanie do pokoju
-        socket.on('joinGameRoom', (roomId) => {
+         // Dołączanie do pokoju
+        socket.on('joinGameRoom', ({roomId, userId}) => {
             socket.join(roomId);
+            socket.activeRoom = roomId;
+            socket.activeUser = userId;
             console.log(`Socket ${socket.id} dołączył do pokoju: ${roomId}`);
         });
 
@@ -21,12 +23,11 @@ module.exports = (io) => {
         socket.on('newRoomCreated', (data) => {
             socket.broadcast.emit('updateRoomList', data);
         });
-
         // Logika ruchów gry
         socket.on('makeMove', async ({ roomId, userId, index, value }) => {
             try {
                 const room = await Room.findById(roomId);
-                // Walidacje podstawowe
+                // Walidacje czy gra trwa i czy gracz należy do pokoju
                 if (!room || room.status !== 'playing') return;
                 
                 // Sprawdzenie czy użytkownik należy do pokoju
@@ -52,17 +53,17 @@ module.exports = (io) => {
                         
                         // Obliczanie punktów końcowych z mnożnikiem
                         const multiplier = DIFFICULTY_MULTIPLIERS[room.difficulty] || 1;
-                        const hostFinal = Math.round(room.scores.host * multiplier);
-                        const oppFinal = Math.round(room.scores.opponent * multiplier);
-
-                        // Zapis do bazy User
-                        await User.findByIdAndUpdate(room.host, { $inc: { totalPoints: hostFinal } });
-                        await User.findByIdAndUpdate(room.opponent, { $inc: { totalPoints: oppFinal } });
 
                         // Zwycięzca
                         let winnerName = "Remis";
-                        if (room.scores.host > room.scores.opponent) winnerName = "Host";
-                        else if (room.scores.opponent > room.scores.host) winnerName = "Przeciwnik";
+                        if (room.scores.host > room.scores.opponent) {
+                            winnerName = "Host";
+                            const hostFinal = Math.round(room.scores.host * multiplier);
+                            await User.findByIdAndUpdate(room.host, { $inc: { totalPoints: hostFinal } })}
+                        else if (room.scores.opponent > room.scores.host) {
+                            winnerName = "Przeciwnik";
+                            const oppFinal = Math.round(room.scores.opponent * multiplier);
+                            await User.findByIdAndUpdate(room.opponent, { $inc: { totalPoints: oppFinal } })};
 
                         await room.save();
                         
@@ -89,6 +90,34 @@ module.exports = (io) => {
                 }
             } catch (err) {
                 console.error('Błąd przy ruchu:', err);
+            }
+            
+        });
+        socket.on('disconnect', async () => {
+            if (!socket.activeRoom || !socket.activeUser) return;
+            try {
+                const room = await Room.findById(socket.activeRoom);
+                if (!room) return;
+
+                // SCENARIUSZ 1: Gra w lobby (waiting)
+                if (room.status === 'waiting') {
+                    // Jeśli wyszedł Host -> usuwamy pokój
+                    if (room.host.toString() === socket.activeUser) {
+                        await Room.findByIdAndDelete(socket.activeRoom);
+                        io.emit('updateRoomList'); // Odświeżamy listę w lobby
+                    }
+                }
+                // SCENARIUSZ 2: Gra w trakcie (playing)
+                else if (room.status === 'playing') {
+                    // Kończymy grę
+                    room.status = 'finished';
+                    await room.save();
+                    // Informujemy drugiego gracza
+                    io.to(socket.activeRoom).emit('opponentLeft');
+                }
+
+            } catch (err) {
+                console.error('Błąd przy rozłączaniu:', err);
             }
         });
     });

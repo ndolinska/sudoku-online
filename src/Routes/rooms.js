@@ -112,5 +112,36 @@ router.patch('/:id/join', auth, async (req, res) => {
         res.status(500).json({ error: 'Błąd serwera' });
     }
 });
+// DELETE /rooms/:id | Usuwanie pokoju (tylko przez Hosta w lobby)
+router.delete('/:id', auth, async (req, res) => {
+    try {
+        const roomId = req.params.id;
+        const userId = req.user.userId;
 
+        const room = await Room.findById(roomId);
+        if (!room) {
+            return res.status(404).json({ message: 'Pokój nie istnieje' });
+        }
+
+        // Sprawdzamy czy to Host próbuje usunąć
+        if (room.host.toString() !== userId) {
+            return res.status(403).json({ message: 'Tylko host może usunąć pokój' });
+        }
+
+        // Można usuwać tylko pokoje, które jeszcze nie wystartowały
+        if (room.status !== 'waiting') {
+            return res.status(400).json({ message: 'Nie można usunąć trwającej gry' });
+        }
+
+        await Room.findByIdAndDelete(roomId);
+        const io = req.app.get('io');
+        io.emit('updateRoomList');
+
+        res.json({ message: 'Pokój został usunięty' });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Błąd serwera' });
+    }
+});
 module.exports = router;

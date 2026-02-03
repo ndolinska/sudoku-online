@@ -31,7 +31,8 @@ const RoomSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+        expires: 3600
     },
     scores: {
         host: { type: Number, default: 0 },

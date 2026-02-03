@@ -2,7 +2,7 @@
   "name": "sudoku-online",
   "version": "1.0.0",
   "description": "Projekt na Protokoły sieci Web\r Nadia Dolińska grupa 1 300810",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

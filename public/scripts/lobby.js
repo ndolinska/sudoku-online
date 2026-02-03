@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     const renderRooms = (rooms) => {
         if (rooms.length === 0) {
-            roomsList.innerHTML = '<p style="width:100%; text-align:center; color:#888;">Brak aktywnych pokoi. Stwórz pierwszy!</p>';
+            roomsList.innerHTML = '<p>Brak aktywnych pokoi. Stwórz pierwszy!</p>';
             return;
         }
         roomsList.innerHTML = rooms.map(room => {
