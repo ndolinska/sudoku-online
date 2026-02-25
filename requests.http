@@ -1,24 +1,6 @@
 ### Test statusu serwera
 GET http://localhost:3000/
 
-### Rejestracja nowego użytkownika
-POST http://localhost:3000/auth/register
-Content-Type: application/json
-
-{
-    "username": "Gracz2",
-    "password": "TajneHaslo123"
-}
-
-### Logowanie z powyższymi danymi
-POST http://localhost:3000/auth/login
-Content-Type: application/json
-
-{
-    "username": "Gracz2",
-    "password": "TajneHaslo123"
-}
-
 ### Wylogowanie
 POST http://localhost:3000/auth/logout
 
@@ -34,15 +16,6 @@ Content-Type: application/json
 }
 ### Pobieramy liste pokoji
 GET http://localhost:3000/rooms
-
-### Edycja profilu (Zmiana hasła lub nazwy)
-PATCH http://localhost:3000/auth/me
-Content-Type: application/json
-
-{
-    "username": "GraczTestowy_Updated",
-    "password": "NoweHaslo123"
-}
 
 ### Pobranie historii czatu
 GET http://localhost:3000/chat/history
